@@ -42,7 +42,6 @@ namespace Lab2
 			return array[0];
         }
 
-		// TODO
 		/// <summary>
 		/// Adds given item to the heap.
 		/// Time complexity: O(?).
@@ -95,7 +94,6 @@ namespace Lab2
 			return max;
         }
 
-		// TODO
 		/// <summary>
 		/// Removes and returns the min item in the max-heap.
 		/// Time complexity: O(?).
@@ -137,14 +135,7 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
-			for(int i=0; i<Count;i++)
-            {
-				if (array[i].CompareTo(value) == 0)
-                {
-					return true;
-                }
-            }
-
+			
 			return false;
 		}
 
@@ -152,70 +143,12 @@ namespace Lab2
 		private void TrickleUp(int index)
 		{
 
-			while (index > 0)
-			{
-				int parentIndex = (index - 1) / 2;
-
-				if (array[index].CompareTo(array[parentIndex]) <= 0)
-				{
-					return;
-				}
-				else
-				{
-					Swap(index, parentIndex);
-					index = parentIndex;
-				}
-			}
-
-			//if(index == 0)
-			//         {
-			//	return;
-			//         }
-
-			//int parentIndex = (index - 1) / 2;
-
-			//if ( array[index].CompareTo( array[parentIndex]) > 0 )
-			//         {
-			//	Swap(index, parentIndex);
-			//	TrickleUp(parentIndex);
-			//         }
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
-			var childIndex = 2 * index + 1;
-			T value = array[index];
-
-			while (childIndex < Count)
-			{
-				// Find the max among the node and all the node's children
-				T max = value;
-
-				int maxIndex = -1;
-
-				for (int i = 0; i < 2 && i + childIndex < Count; i++)
-				{
-					//if (array[i + childIndex] > max)
-					if (array[i + childIndex].CompareTo(max) > 0)
-					{
-						max = array[i + childIndex];
-						maxIndex = i + childIndex;
-					}
-				}
-
-				if (max.CompareTo(value) == 0)
-				{
-					return;
-				}
-				else
-				{
-					Swap(index, maxIndex);
-					index = maxIndex;
-					childIndex = 2 * index + 1;
-				}
-			}
-
+			
 		}
 
 		/// <summary>
