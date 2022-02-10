@@ -52,11 +52,17 @@ namespace Lab2
 			int nextEmptyIndex = Count;
 
 			array[nextEmptyIndex] = item;
+			
+			TrickleUp(Count);
+
 			Count++;
 
-			//trickleUp()
-
-        }
+			// Resize array if full
+			if (Count == array.Length)
+			{
+				DoubleArrayCapacity();
+			}
+		}
 
 		public T Extract()
         {
@@ -131,7 +137,13 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
-
+			for(int i=0; i<Count;i++)
+            {
+				if (array[i].CompareTo(value) == 0)
+                {
+					return true;
+                }
+            }
 
 			return false;
 		}
@@ -140,11 +152,69 @@ namespace Lab2
 		private void TrickleUp(int index)
 		{
 
+			while (index > 0)
+			{
+				int parentIndex = (index - 1) / 2;
+
+				if (array[index].CompareTo(array[parentIndex]) <= 0)
+				{
+					return;
+				}
+				else
+				{
+					Swap(index, parentIndex);
+					index = parentIndex;
+				}
+			}
+
+			//if(index == 0)
+			//         {
+			//	return;
+			//         }
+
+			//int parentIndex = (index - 1) / 2;
+
+			//if ( array[index].CompareTo( array[parentIndex]) > 0 )
+			//         {
+			//	Swap(index, parentIndex);
+			//	TrickleUp(parentIndex);
+			//         }
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
+			var childIndex = 2 * index + 1;
+			T value = array[index];
+
+			while (childIndex < Count)
+			{
+				// Find the max among the node and all the node's children
+				T max = value;
+
+				int maxIndex = -1;
+
+				for (int i = 0; i < 2 && i + childIndex < Count; i++)
+				{
+					//if (array[i + childIndex] > max)
+					if (array[i + childIndex].CompareTo(max) > 0)
+					{
+						max = array[i + childIndex];
+						maxIndex = i + childIndex;
+					}
+				}
+
+				if (max.CompareTo(value) == 0)
+				{
+					return;
+				}
+				else
+				{
+					Swap(index, maxIndex);
+					index = maxIndex;
+					childIndex = 2 * index + 1;
+				}
+			}
 
 		}
 
@@ -163,7 +233,7 @@ namespace Lab2
 		// TODO
 		private static int LeftChild(int position)
 		{
-			return 2 * position + 1;
+			return 0;
 		}
 
 		/// <summary>
@@ -172,7 +242,7 @@ namespace Lab2
 		// TODO
 		private static int RightChild(int position)
 		{
-			return 2 * position + 2;
+			return 0;
 		}
 
 		private void Swap(int index1, int index2)

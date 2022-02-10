@@ -54,15 +54,16 @@ namespace Lab2
 			int nextEmptyIndex = Count;
 
 			array[nextEmptyIndex] = item;
+
+			TrickleUp(Count);
+
 			Count++;
 
-			//trickleUp()
-
 			// Resize array if full
-			if(Count == array.Length)
-            {
+			if (Count == array.Length)
+			{
 				DoubleArrayCapacity();
-            }
+			}
 
 		}
 				
@@ -131,7 +132,7 @@ namespace Lab2
 		/// </summary>
 		private static int LeftChild(int position)
 		{
-			return 2 * position + 1;
+			return 0;
 		}
 
 		// TODO
@@ -140,7 +141,7 @@ namespace Lab2
 		/// </summary>
 		private static int RightChild(int position)
 		{
-			return 2 * position + 2;
+			return 0;
 		}
 
 		private void Swap(int index1, int index2)

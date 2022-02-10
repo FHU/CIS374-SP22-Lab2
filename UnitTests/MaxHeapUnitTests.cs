@@ -100,9 +100,9 @@ namespace UnitTests
         {
             int[] array = { 1, 2, 3, 4, 5, 6, 7 };
             MaxHeap<int> heap1 = new MaxHeap<int>(array);
-            Assert.AreEqual(heap1.ExtractMax(), 3);
-            Assert.AreEqual(heap1.ExtractMax(), 2);
-            Assert.AreEqual(heap1.ExtractMax(), 1);
+            Assert.AreEqual(heap1.ExtractMax(), 7);
+            Assert.AreEqual(heap1.ExtractMax(), 6);
+            Assert.AreEqual(heap1.ExtractMax(), 5);
         }
 
         [TestMethod]
@@ -236,6 +236,7 @@ namespace UnitTests
             Assert.IsTrue(heap1.Contains(5000));
             Assert.IsTrue(heap1.Contains(150));
             heap1.ExtractMax();
+            Console.WriteLine( heap1.Peek() );
             Assert.IsFalse(heap1.Contains(5000));
 
         }
@@ -259,7 +260,7 @@ namespace UnitTests
 
             temp1 = heap1.ExtractMax();
 
-            while (heap1.IsEmpty == false)
+            while (!heap1.IsEmpty)
             {
                 temp2 = heap1.ExtractMax();
                 Assert.IsTrue(temp2 < temp1);
