@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+
 namespace Lab2
 {
 	public class MinHeap<T> where T : IComparable<T>
