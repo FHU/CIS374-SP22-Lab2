@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Lab2
 {
-	public class MaxHep<T> where T: IComparable<T>
+	public class MaxHeap<T> where T: IComparable<T>
 	{
 		private T[] array;
 		private int initialSize = 8;
@@ -14,7 +14,7 @@ namespace Lab2
 
 		public bool IsEmpty => Count == 0;
 
-		public MaxHep(T[] initialArray = null)
+		public MaxHeap(T[] initialArray = null)
 		{
 			array = new T[initialSize];
 

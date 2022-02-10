@@ -5,32 +5,31 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTests
 {
     [TestClass]
-    public class UnitTests
+    public class MaxHeapUnitTests
     {
         [TestMethod]
         public void TestAddPeekInt1()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
 
+            heap1.Add(9);
+            heap1.Add(8);
+            heap1.Add(7);
+            heap1.Add(6);
             heap1.Add(0);
             heap1.Add(1);
             heap1.Add(2);
             heap1.Add(3);
             heap1.Add(4);
             heap1.Add(5);
-            heap1.Add(6);
-            heap1.Add(7);
-            heap1.Add(8);
-            heap1.Add(9);
-
-            Assert.AreEqual(0, heap1.Peek());
-
+            
+            Assert.AreEqual(9, heap1.Peek());
         }
 
         [TestMethod]
         public void TestAddExtractCountInt1()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
 
             heap1.Add(4);
             heap1.Add(3);
@@ -39,19 +38,19 @@ namespace UnitTests
             heap1.Add(0);
             Assert.AreEqual(5, heap1.Count);
 
-            Assert.AreEqual(0, heap1.ExtractMin());
+            Assert.AreEqual(4, heap1.ExtractMax());
             Assert.AreEqual(4, heap1.Count);
-            Assert.AreEqual(1, heap1.ExtractMin());
+            Assert.AreEqual(3, heap1.ExtractMax());
             Assert.AreEqual(3, heap1.Count);
-            Assert.AreEqual(2, heap1.ExtractMin());
+            Assert.AreEqual(2, heap1.ExtractMax());
             Assert.AreEqual(2, heap1.Count);
-            Assert.AreEqual(3, heap1.ExtractMin());
+            Assert.AreEqual(1, heap1.ExtractMax());
             Assert.AreEqual(1, heap1.Count);
-            Assert.AreEqual(4, heap1.ExtractMin());
+            Assert.AreEqual(0, heap1.ExtractMax());
             Assert.AreEqual(0, heap1.Count);
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
             Assert.AreEqual(0, heap1.Count);
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
             Assert.AreEqual(0, heap1.Count);
 
         }
@@ -59,28 +58,28 @@ namespace UnitTests
         [TestMethod]
         public void TestAddExtractInt1()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
 
-            heap1.Add(4);
-            heap1.Add(3);
-            heap1.Add(2);
-            heap1.Add(1);
             heap1.Add(0);
+            heap1.Add(1);
+            heap1.Add(2);
+            heap1.Add(3);
+            heap1.Add(4);
             
-            Assert.AreEqual(0, heap1.ExtractMin());
-            Assert.AreEqual(1, heap1.ExtractMin());
-            Assert.AreEqual(2, heap1.ExtractMin());
-            Assert.AreEqual(3, heap1.ExtractMin());
-            Assert.AreEqual(4, heap1.ExtractMin());
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.AreEqual(4, heap1.ExtractMax());
+            Assert.AreEqual(3, heap1.ExtractMax());
+            Assert.AreEqual(2, heap1.ExtractMax());
+            Assert.AreEqual(1, heap1.ExtractMax());
+            Assert.AreEqual(0, heap1.ExtractMax());
+            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
+            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
 
         }
 
         [TestMethod]
         public void TestAddExtractString1()
         {
-            MinHeap<string> heap1 = new MinHeap<string>();
+            MaxHeap<string> heap1 = new MaxHeap<string>();
 
             heap1.Add("kaden");
             heap1.Add("caleb");
@@ -88,29 +87,28 @@ namespace UnitTests
             heap1.Add("dallas");
             heap1.Add("cameron");
 
-            Assert.AreEqual("caleb", heap1.ExtractMin());
-            Assert.AreEqual("cameron", heap1.ExtractMin());
-            Assert.AreEqual("dallas", heap1.ExtractMin());
-            Assert.AreEqual("kaden", heap1.ExtractMin());
-            Assert.AreEqual("kenan", heap1.ExtractMin());
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
-
+            Assert.AreEqual("kenan", heap1.ExtractMax());
+            Assert.AreEqual("kaden", heap1.ExtractMax());
+            Assert.AreEqual("dallas", heap1.ExtractMax());
+            Assert.AreEqual("cameron", heap1.ExtractMax());
+            Assert.AreEqual("caleb", heap1.ExtractMax());
+            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
         }
 
         [TestMethod]
-        public void TestExtractMin1()
+        public void TestExtract1()
         {
             int[] array = { 1, 2, 3, 4, 5, 6, 7 };
-            MinHeap<int> heap1 = new MinHeap<int>(array);
-            Assert.AreEqual(heap1.ExtractMin(), 1);
-            Assert.AreEqual(heap1.ExtractMin(), 2);
-            Assert.AreEqual(heap1.ExtractMin(), 3);
+            MaxHeap<int> heap1 = new MaxHeap<int>(array);
+            Assert.AreEqual(heap1.ExtractMax(), 3);
+            Assert.AreEqual(heap1.ExtractMax(), 2);
+            Assert.AreEqual(heap1.ExtractMax(), 1);
         }
 
         [TestMethod]
         public void TestAddExtractIsEmptyString()
         {
-            MinHeap<string> heap1 = new MinHeap<string>();
+            MaxHeap<string> heap1 = new MaxHeap<string>();
 
             heap1.Add("kaden");
             heap1.Add("caleb");
@@ -118,19 +116,20 @@ namespace UnitTests
             heap1.Add("dallas");
             heap1.Add("cameron");
 
-            Assert.AreEqual("caleb", heap1.ExtractMin());
-            Assert.AreEqual("cameron", heap1.ExtractMin());
-            Assert.AreEqual("dallas", heap1.ExtractMin());
-            Assert.AreEqual("kaden", heap1.ExtractMin());
             Assert.IsFalse(heap1.IsEmpty);
-            Assert.AreEqual("kenan", heap1.ExtractMin());
+
+            Assert.AreEqual("kenan", heap1.ExtractMax());
+            heap1.ExtractMax();
+            heap1.ExtractMax();
+            heap1.ExtractMax();
+            heap1.ExtractMax();
             Assert.IsTrue(heap1.IsEmpty);
         }
 
         [TestMethod]
         public void TestAddResizeInt2()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
 
             heap1.Add(1);
             heap1.Add(2);
@@ -173,18 +172,18 @@ namespace UnitTests
             heap1.Add(39);
             heap1.Add(40);
 
-            Assert.AreEqual(1, heap1.Peek());
+            Assert.AreEqual(40, heap1.Peek());
             Assert.AreEqual(40, heap1.Count);
         }
 
         [TestMethod]
         public void TestConstructorInt1()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
             Assert.AreEqual(heap1.Count, 0);
 
             int[] array = { 1, 2, 3, 4 };
-            MinHeap<int> heap2 = new MinHeap<int>(array);
+            MaxHeap<int> heap2 = new MaxHeap<int>(array);
             Assert.AreEqual(heap2.Count, 4);
         }
 
@@ -192,11 +191,11 @@ namespace UnitTests
         public void TestConstructorInt2()
         {
             int[] array = { };
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
             Assert.AreEqual(heap1.Count, 0);
 
             array = null;
-            MinHeap<int> heap2 = new MinHeap<int>(array);
+            MaxHeap<int> heap2 = new MaxHeap<int>(array);
             Assert.AreEqual(heap2.Count, 0);
         }
 
@@ -204,7 +203,7 @@ namespace UnitTests
         public void TestContainsInt1()
         {
 
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
             heap1.Add(0);
             heap1.Add(25);
             heap1.Add(50);
@@ -222,7 +221,7 @@ namespace UnitTests
         [TestMethod]
         public void TestAddExtractIsEmptyContainsInt()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
+            MaxHeap<int> heap1 = new MaxHeap<int>();
             heap1.Add(0);
             heap1.Add(25);
             heap1.Add(50);
@@ -236,17 +235,17 @@ namespace UnitTests
             heap1.Add(5000);
             Assert.IsTrue(heap1.Contains(5000));
             Assert.IsTrue(heap1.Contains(150));
-            heap1.ExtractMin();
-            Assert.IsFalse(heap1.Contains(0));
+            heap1.ExtractMax();
+            Assert.IsFalse(heap1.Contains(5000));
 
         }
 
         [TestMethod]
         public void TestAddExtractIsEmptyInt()
         {
-            MinHeap<int> heap1 = new MinHeap<int>();
-            int Temp1;
-            int Temp2;
+            MaxHeap<int> heap1 = new MaxHeap<int>();
+            int temp1;
+            int temp2;
 
             heap1.Add(5);
             heap1.Add(7);
@@ -258,35 +257,36 @@ namespace UnitTests
             heap1.Add(82);
             heap1.Add(1769);
 
-            Temp1 = heap1.ExtractMin();
+            temp1 = heap1.ExtractMax();
 
             while (heap1.IsEmpty == false)
             {
-                Temp2 = heap1.ExtractMin();
-                Assert.IsTrue(Temp2 > Temp1);
-                Temp1 = Temp2;
+                temp2 = heap1.ExtractMax();
+                Assert.IsTrue(temp2 < temp1);
+                temp1 = temp2;
             }
         }
 
         [TestMethod]
         public void TestPeek()
         {
-            MinHeap<int> heap0 = new MinHeap<int>();
-            heap0.Add(160);
-            Assert.AreEqual(160, heap0.Peek());
-            heap0.Add(130);
-            Assert.AreEqual(130, heap0.Peek());
-            heap0.Add(100);
-            Assert.AreEqual(100, heap0.Peek());
-            heap0.Add(90);
-            Assert.AreEqual(90, heap0.Peek());
-            heap0.Add(60);
-            Assert.AreEqual(60, heap0.Peek());
-            heap0.Add(30);
-            Assert.AreEqual(30, heap0.Peek());
+            MaxHeap<int> heap0 = new MaxHeap<int>();
+
             heap0.Add(0);
             Assert.AreEqual(0, heap0.Peek());
-
+            heap0.Add(30);
+            Assert.AreEqual(30, heap0.Peek());
+            heap0.Add(60);
+            Assert.AreEqual(60, heap0.Peek());
+            heap0.Add(90);
+            Assert.AreEqual(90, heap0.Peek());
+            heap0.Add(100);
+            Assert.AreEqual(100, heap0.Peek());
+            heap0.Add(130);
+            Assert.AreEqual(130, heap0.Peek());
+            heap0.Add(160);
+            Assert.AreEqual(160, heap0.Peek());
+            
         }
     }
 }
