@@ -83,10 +83,12 @@ namespace Lab2
 			T max = array[0];
 
 			// swap max with last element
-			Swap(0, Count - 1);
+			//Swap(0, Count - 1);
+			array[0] = array[Count - 1];
 
 			// remove last element
 			Count--;
+			
 
 			// trickle down from root
 			TrickleDown(0);
@@ -118,7 +120,8 @@ namespace Lab2
 
 			// remove min
 			// swap min with last element
-			Swap(minIndex, Count - 1);
+			//Swap(minIndex, Count - 1);
+			array[0] = array[Count - 1];
 
 			// remove last element
 			Count--;
@@ -135,6 +138,7 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
+
 			
 			return false;
 		}
@@ -142,13 +146,75 @@ namespace Lab2
 		// TODO
 		private void TrickleUp(int index)
 		{
+			while (index > 0)
+			{
+				// Compute the parent node's index
+				int parentIndex = (index - 1) / 2;
 
+				// Check for a violation of the max heap property
+				if (Convert.ToInt32(array[index]) <= Convert.ToInt32(array[parentIndex]))
+				{
+					// No violation, so percolate up is done.
+					return;
+				}
+				else
+				{
+					// Swap heapArray[nodeIndex] and heapArray[parentIndex]
+					T temp = array[index];
+					array[index] = array[parentIndex];
+					array[parentIndex] = temp;
+
+					// Continue the loop from the parent node
+					index = parentIndex;
+				}
+			}
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
-			
+			int childIndex = 2 * index + 1;
+			T value = array[index];
+
+		   while (index < array.Length)
+					{
+				// Find the max among the node and all the node's children
+				T maxValue = value;
+
+				int maxIndex = -1;
+				//(int i = 0; i < 5; i++) 
+				for (int i = 0; i < 2 && i + childIndex < array.Length; i++)
+				{
+							if (Convert.ToInt32(array[i + childIndex]) > Convert.ToInt32(maxValue))
+							{
+								maxValue = array[i + childIndex];
+
+
+								maxIndex = i + childIndex;
+		   
+							}
+				}
+
+						if (Convert.ToInt32(maxValue) == Convert.ToInt32(value))
+						{
+							return;
+		  
+						}
+						else
+						{
+							var temp = array[index];
+
+							array[index] = array[maxIndex];
+							array[maxIndex] = temp;
+							//swap(Convert.ToInt32(array[index]), Convert.ToInt32(array[maxIndex]))
+
+							index = maxIndex;
+
+
+							childIndex = 2 * index + 1;
+		  
+						}
+			}
 		}
 
 		/// <summary>
@@ -157,7 +223,10 @@ namespace Lab2
 		// TODO
 		private static int Parent(int position)
 		{
-			return 0;
+			int pos = (position - 1) / 2;
+			decimal posi = pos;
+
+			return (int)Math.Floor(posi);
 		}
 
 		/// <summary>
@@ -166,7 +235,7 @@ namespace Lab2
 		// TODO
 		private static int LeftChild(int position)
 		{
-			return 0;
+			return (position * 2) + 1;
 		}
 
 		/// <summary>
@@ -175,7 +244,7 @@ namespace Lab2
 		// TODO
 		private static int RightChild(int position)
 		{
-			return 0;
+			return (position + 1) * 2;
 		}
 
 		private void Swap(int index1, int index2)
