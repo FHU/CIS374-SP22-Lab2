@@ -44,7 +44,7 @@ namespace Lab2
 
 		/// <summary>
 		/// Adds given item to the heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(log(n)).
 		/// </summary>
 		public void Add(T item)
         {
@@ -71,7 +71,7 @@ namespace Lab2
 		// TODO
 		/// <summary>
 		/// Removes and returns the max item in the max-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(log(n)).
 		/// </summary>
 		public T ExtractMax()
         {
@@ -96,7 +96,7 @@ namespace Lab2
 
 		/// <summary>
 		/// Removes and returns the min item in the max-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(n/2).
 		/// </summary>
 		public T ExtractMin()
         {
@@ -134,21 +134,79 @@ namespace Lab2
 		/// </summary>
 		public bool Contains(T value)
 		{
-			// do a linear search of the array
-			
+			for (int i = 0; i < Count; i++)
+            {
+				if(value.Equals(array[i]))
+                {
+					return true;
+                }
+            }
 			return false;
 		}
 
 		// TODO
 		private void TrickleUp(int index)
 		{
+			if(index == 0)
+            {
+				return;
+            }
+			//int parrentIndex = (index - 1) / 2;
+			int parrentIndex = Parent(index);
+			if (array[index].CompareTo(array[parrentIndex]) > 0)
+            {
+				Swap(index, parrentIndex);
+				TrickleUp(parrentIndex);
+            }
+			else
+            {
+				return;
+            }
+
 
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
-			
+			//int childIndex1 = (index * 2 ) + 1;
+			int childIndex1 = LeftChild(index);
+			//int childIndex2 = (index * 2 ) + 2;
+			int childIndex2 = RightChild(index);
+			if ( childIndex2 + 1 > Count)
+			{
+				if(childIndex1 + 1 > Count)
+                {
+					return;
+                }
+				else
+                {
+					if (array[index].CompareTo(array[childIndex1]) < 0)
+                    {
+						Swap(index, childIndex1);
+						return;
+                    }
+					else
+                    {
+						return;
+                    }
+
+				}
+			}
+			if (array[index].CompareTo(array[childIndex1]) < 0 || array[index].CompareTo(array[childIndex2]) < 0)
+			{
+				if (array[childIndex1].CompareTo(array[childIndex2]) > 0)
+                {
+					Swap(index, childIndex1);
+					TrickleDown(childIndex1);
+                }
+				else
+                {
+					Swap(index, childIndex2);
+					TrickleDown(childIndex2);
+                }
+			}
+			return;
 		}
 
 		/// <summary>
@@ -157,7 +215,7 @@ namespace Lab2
 		// TODO
 		private static int Parent(int position)
 		{
-			return 0;
+			return (position - 1) / 2;
 		}
 
 		/// <summary>
@@ -166,7 +224,7 @@ namespace Lab2
 		// TODO
 		private static int LeftChild(int position)
 		{
-			return 0;
+			return (position * 2) + 1;
 		}
 
 		/// <summary>
@@ -175,7 +233,7 @@ namespace Lab2
 		// TODO
 		private static int RightChild(int position)
 		{
-			return 0;
+			return (position * 2) + 2; ;
 		}
 
 		private void Swap(int index1, int index2)
