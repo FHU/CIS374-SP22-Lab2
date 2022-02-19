@@ -140,13 +140,18 @@ namespace Lab2
 		/// </summary>
 		public bool Contains(T value)
 		{
-			// do a linear search of the array
+			int index = 0;
 			foreach (T item in array)
 			{
-				if (item.CompareTo(value) == 0)
+				if (index < Count)
 				{
-					return true;
+					if (item.CompareTo(value) == 0)
+					{
+						return true;
+					}
 				}
+				index++;
+				// do a linear search of the array
 			}
 
 			return false;

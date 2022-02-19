@@ -147,12 +147,18 @@ namespace Lab2
 				throw new Exception("Empty Heap");
 			}
 			// do a linear search of the array
+			int index = 0;
 			foreach (T item in array)
             {
-				if (item.CompareTo(value) == 0)
+				if (index < Count)
                 {
-					return true;
-                }
+					if (item.CompareTo(value) == 0)
+					{
+						return true;
+					}
+				}
+				index++;
+				
             }
 			
 			return false;
