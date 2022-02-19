@@ -22,7 +22,7 @@ namespace UnitTests
             heap1.Add(3);
             heap1.Add(4);
             heap1.Add(5);
-            
+
             Assert.AreEqual(9, heap1.Peek());
         }
 

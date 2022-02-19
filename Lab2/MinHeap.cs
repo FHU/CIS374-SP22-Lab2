@@ -75,21 +75,62 @@ namespace Lab2
 		// TODO
 		/// <summary>
 		/// Removes and returns the max item in the min-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(N + log(N)).
 		/// </summary>
 		public T ExtractMax()
 		{
-			return default;
+			if (IsEmpty)
+			{
+				throw new Exception("Empty Heap");
+			}
+
+			int maxIndex = (Count - 1) / 2 + 1;
+			T max = array[maxIndex];
+			for (int i = maxIndex + 1; i < Count; i++)
+			{
+				if (array[i].CompareTo(max) < 0)
+				{
+					max = array[i];
+					maxIndex = i;
+				}
+			}
+
+			// remove min
+			// swap min with last element
+			Swap(maxIndex, Count - 1);
+
+			// remove last element
+			Count--;
+
+			TrickleUp(maxIndex);
+
+			return max;
 		}
 
 		// TODO
 		/// <summary>
 		/// Removes and returns the min item in the min-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(log(N)).
 		/// </summary>
 		public T ExtractMin()
 		{
-			return default;
+			if (IsEmpty)
+			{
+				throw new Exception("Empty Heap");
+			}
+
+			T min = array[0];
+
+			// swap max with last element
+			Swap(0, Count - 1);
+
+			// remove last element
+			Count--;
+
+			// trickle down from root
+			TrickleDown(0);
+
+			return min;
 		}
 
 		// TODO
@@ -99,8 +140,13 @@ namespace Lab2
 		/// </summary>
 		public bool Contains(T value)
 		{
-			// do a linear search of the array
-
+			for (int i = 0; i < Count; i++)
+			{
+				if (array[i].Equals(value))
+				{
+					return true;
+				}
+			}
 
 			return false;
 		}
@@ -108,13 +154,36 @@ namespace Lab2
 		// TODO
 		private void TrickleUp(int index)
 		{
-
+			if (array[index].CompareTo(array[Parent(index)]) < 0)
+			{
+				Swap(index, Parent(index));
+				TrickleUp(Parent(index));
+			}
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
-
+			if (LeftChild(index) >= Count)
+            {
+				return;
+            }
+			if (array[index].CompareTo(array[LeftChild(index)]) > 0 && LeftChild(index) < Count)
+			{
+				if (array[LeftChild(index)].CompareTo(array[RightChild(index)]) < 0 || RightChild(index) >= Count)
+				{
+					Swap(index, LeftChild(index));
+					TrickleDown(LeftChild(index));
+				}
+			}
+			if (array[index].CompareTo(array[RightChild(index)]) > 0 && RightChild(index) < Count)
+			{
+				if (array[RightChild(index)].CompareTo(array[LeftChild(index)]) < 0)
+				{
+					Swap(index, RightChild(index));
+					TrickleDown(RightChild(index));
+				}
+			}
 		}
 
 		// TODO
@@ -123,7 +192,7 @@ namespace Lab2
 		/// </summary>
 		private static int Parent(int position)
 		{
-			return 0;
+			return (position - 1) / 2;
 		}
 
 		// TODO
@@ -132,7 +201,7 @@ namespace Lab2
 		/// </summary>
 		private static int LeftChild(int position)
 		{
-			return 0;
+			return position * 2 + 1;
 		}
 
 		// TODO
@@ -141,7 +210,7 @@ namespace Lab2
 		/// </summary>
 		private static int RightChild(int position)
 		{
-			return 0;
+			return position * 2 + 2;
 		}
 
 		private void Swap(int index1, int index2)
