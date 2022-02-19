@@ -3,193 +3,252 @@ using System.Linq;
 
 namespace Lab2
 {
-	public class MaxHeap<T> where T: IComparable<T>
-	{
-		private T[] array;
-		private int initialSize = 8;
+    public class MaxHeap<T> where T : IComparable<T>
+    {
+        private T[] array;
+        private int initialSize = 8;
 
-		public int Count { get; private set; } = 0;
+        public int Count { get; private set; } = 0;
 
-		public int Capacity => array.Length;
+        public int Capacity => array.Length;
 
-		public bool IsEmpty => Count == 0;
+        public bool IsEmpty => Count == 0;
 
-		public MaxHeap(T[] initialArray = null)
-		{
-			array = new T[initialSize];
-
-			// Add initial value if present
-			if (initialArray != null && initialArray.Length > 0)
-			{
-				foreach (var item in initialArray)
-				{
-					Add(item);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Returns the min item but does NOT remove it.
-		/// Time complexity: O(1).
-		/// </summary>
-		public T Peek()
+        public MaxHeap(T[] initialArray = null)
         {
-			if (IsEmpty)
-			{
-				throw new Exception("Empty Heap");
-			}
+            array = new T[initialSize];
 
-			return array[0];
-        }
-
-		/// <summary>
-		/// Adds given item to the heap.
-		/// Time complexity: O(?).
-		/// </summary>
-		public void Add(T item)
-        {
-			int nextEmptyIndex = Count;
-
-			array[nextEmptyIndex] = item;
-			
-			TrickleUp(Count);
-
-			Count++;
-
-			// Resize array if full
-			if (Count == array.Length)
-			{
-				DoubleArrayCapacity();
-			}
-		}
-
-		public T Extract()
-        {
-			return ExtractMax();
-        }
-
-		// TODO
-		/// <summary>
-		/// Removes and returns the max item in the max-heap.
-		/// Time complexity: O(?).
-		/// </summary>
-		public T ExtractMax()
-        {
-			if (IsEmpty)
-			{
-				throw new Exception("Empty Heap");
-			}
-
-			T max = array[0];
-
-			// swap max with last element
-			Swap(0, Count - 1);
-
-			// remove last element
-			Count--;
-
-			// trickle down from root
-			TrickleDown(0);
-
-			return max;
-        }
-
-		/// <summary>
-		/// Removes and returns the min item in the max-heap.
-		/// Time complexity: O(?).
-		/// </summary>
-		public T ExtractMin()
-        {
-			if(IsEmpty)
+            // Add initial value if present
+            if (initialArray != null && initialArray.Length > 0)
             {
-				throw new Exception("Empty Heap");
+                foreach (var item in initialArray)
+                {
+                    Add(item);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the max item but does NOT remove it.
+        /// Time complexity: O(1).
+        /// </summary>
+        public T Peek()
+        {
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
             }
 
-			int minIndex = (Count-1)/2 + 1;
-			T min = array[minIndex];
-			for (int i = minIndex + 1; i < Count; i++)
+            return array[0];
+        }
+
+        /// <summary>
+        /// Adds given item to the heap.
+        /// Time complexity: O(logN).
+        /// </summary>
+        public void Add(T item)
+        {
+            int nextEmptyIndex = Count;
+
+            array[nextEmptyIndex] = item;
+
+            TrickleUp(Count);
+
+            Count++;
+
+            // Resize array if full
+            if (Count == array.Length)
             {
-				if (array[i].CompareTo(min) < 0)
+                DoubleArrayCapacity();
+            }
+        }
+
+        public T Extract()
+        {
+            return ExtractMax();
+        }
+
+        /// <summary>
+        /// Removes and returns the max item in the max-heap.
+        /// Time complexity: O(logN).
+        /// </summary>
+        public T ExtractMax()
+        {
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
+
+            T max = array[0];
+
+            // swap max with last element
+            Swap(0, Count - 1);
+
+            // remove last element
+            Count--;
+
+            // trickle down from root
+            TrickleDown(0);
+
+            return max;
+        }
+
+        /// <summary>
+        /// Removes and returns the min item in the max-heap.
+        /// Time complexity: O(NlogN).
+        /// </summary>
+        public T ExtractMin()
+        {
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
+
+            int minIndex = (Count - 1) / 2 + 1;
+            T min = array[minIndex];
+            for (int i = minIndex + 1; i < Count; i++)
+            {
+                if (array[i].CompareTo(min) < 0)
                 {
-					min = array[i];
-					minIndex = i;
+                    min = array[i];
+                    minIndex = i;
                 }
             }
 
-			// remove min
-			// swap min with last element
-			Swap(minIndex, Count - 1);
+            // remove min
+            // swap min with last element
+            Swap(minIndex, Count - 1);
 
-			// remove last element
-			Count--;
+            // remove last element
+            Count--;
 
-			TrickleUp(minIndex);
+            TrickleUp(minIndex);
 
-			return min;
-		}
+            return min;
+        }
 
-		/// <summary>
-		/// Returns true if the heap contains the given value; otherwise false.
-		/// Time complexity: O(N).
-		/// </summary>
-		public bool Contains(T value)
-		{
-			// do a linear search of the array
-			
-			return false;
-		}
+        /// <summary>
+        /// Returns true if the heap contains the given value; otherwise false.
+        /// Time complexity: O(N).
+        /// </summary>
+        public bool Contains(T value)
+        {
+            // do a linear search of the array
+            for (int i = 0; i < Count; i++)
+            {
+                if (array[i].CompareTo(value) == 0)
+                {
+                    return true;
+                }
+            }
 
-		// TODO
-		private void TrickleUp(int index)
-		{
+            return false;
+        }
 
-		}
+        private void TrickleUp(int index)
+        {
+            while (index > 0)
+            {
+                var parentIndex = Parent(index);
+                if (array[index].CompareTo(array[parentIndex]) <= 0)
+                {
+                    return;
+                }
+                else
+                {
+                    Swap(index, parentIndex);
+                    index = parentIndex;
+                }
+            }
+        }
 
-		// TODO
-		private void TrickleDown(int index)
-		{
-			
-		}
+        private void TrickleDown(int index)
+        {
+            var childIndex = LeftChild(index);
+            var value = array[index];
 
-		/// <summary>
-		/// Gives the position of a node's parent, the node's position in the heap.
-		/// </summary>
-		// TODO
-		private static int Parent(int position)
-		{
-			return 0;
-		}
+            while (childIndex < Count)
+            {
+                var maxValue = value;
+                var maxIndex = -1;
 
-		/// <summary>
-		/// Returns the position of a node's left child, given the node's position.
-		/// </summary>
-		// TODO
-		private static int LeftChild(int position)
-		{
-			return 0;
-		}
+                for (int i = 0; i < 2 && i + childIndex < Count; i++)
+                {
+                    if (array[i + childIndex].CompareTo(maxValue) > 0)
+                    {
+                        maxValue = array[i + childIndex];
+                        maxIndex = i + childIndex;
+                    }
+                }
 
-		/// <summary>
-		/// Returns the position of a node's right child, given the node's position.
-		/// </summary>
-		// TODO
-		private static int RightChild(int position)
-		{
-			return 0;
-		}
+                if (maxValue.CompareTo(value) == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    Swap(index, maxIndex);
+                    index = maxIndex;
+                    childIndex = LeftChild(index);
+                }
+            }
+        }
 
-		private void Swap(int index1, int index2)
-		{
-			var temp = array[index1];
+        /// <summary>
+        /// Gives the position of a node's parent, the node's position in the heap.
+        /// </summary>
+        private static int Parent(int position)
+        {
+            if (position > 0)
+            {
+                return (position - 1) / 2;
+            }
 
-			array[index1] = array[index2];
-			array[index2] = temp;
-		}
+            return 0;
+        }
 
-		private void DoubleArrayCapacity()
-		{
-			Array.Resize(ref array, array.Length * 2);
-		}
-	}
+        /// <summary>
+        /// Returns the position of a node's left child, given the node's position.
+        /// </summary>
+        private static int LeftChild(int position)
+        {
+            return 2 * position + 1;
+        }
+
+        /// <summary>
+        /// Returns the position of a node's right child, given the node's position.
+        /// </summary>
+        private static int RightChild(int position)
+        {
+            return 2 * (position + 1);
+        }
+
+        private void Swap(int index1, int index2)
+        {
+            var temp = array[index1];
+
+            array[index1] = array[index2];
+            array[index2] = temp;
+        }
+
+        private void DoubleArrayCapacity()
+        {
+            Array.Resize(ref array, array.Length * 2);
+        }
+
+        public override string ToString()
+        {
+            var result = "[";
+
+            for (int i = 0; i < Count - 1; i++)
+            {
+                result += array[i] + ", ";
+            }
+
+            result += array[Count - 1] + "]";
+
+            return result;
+        }
+    }
 }
 
