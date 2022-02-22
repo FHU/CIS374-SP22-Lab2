@@ -44,7 +44,7 @@ namespace Lab2
 
 		/// <summary>
 		/// Adds given item to the heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(1).
 		/// </summary>
 		public void Add(T item)
         {
@@ -135,20 +135,69 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
-			
+			foreach (T val in array)
+				if (val.Equals(value))
+					return true;
 			return false;
 		}
 
 		// TODO
 		private void TrickleUp(int index)
 		{
-
+			if(index == 0)
+            {
+				return;
+            }
+			if (array[Parent(index)].CompareTo(array[index]) < 0)
+			{
+				Swap(Parent(index), index);
+				TrickleUp(Parent(index));
+			}
+			return;
+			
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
-			
+			if (RightChild(index) > Count)
+				return;
+			if(LeftChild(index)<= Count)
+            {
+				switch(array[RightChild(index)].CompareTo(array[index]), array[LeftChild(index)].CompareTo(array[index]))
+                {
+					case ( > 0, <= 0):
+						Swap(RightChild(index), index);
+						TrickleDown(RightChild(index));
+						break;
+					case ( <= 0, > 0):
+						Swap(LeftChild(index), index);
+						TrickleDown(LeftChild(index));
+						break;
+					case(> 0, > 0):
+						if (array[RightChild(index)].CompareTo(array[LeftChild(index)]) > 0)
+                        {
+							Swap(RightChild(index), index);
+							TrickleDown(RightChild(index));
+						}
+                        else
+                        {
+							Swap(LeftChild(index), index);
+							TrickleDown(LeftChild(index));
+						}
+						break;
+                }
+				return;
+            }
+            else
+            {
+				if(array[RightChild(index)].CompareTo(array[index]) > 0)
+                {
+					Swap(RightChild(index), index);
+					TrickleDown(RightChild(index));
+                }
+				return;
+            }
 		}
 
 		/// <summary>
@@ -157,7 +206,7 @@ namespace Lab2
 		// TODO
 		private static int Parent(int position)
 		{
-			return 0;
+			return (position - 1) / 2;
 		}
 
 		/// <summary>
@@ -166,7 +215,7 @@ namespace Lab2
 		// TODO
 		private static int LeftChild(int position)
 		{
-			return 0;
+			return (position * 2) + 1;
 		}
 
 		/// <summary>
@@ -175,7 +224,7 @@ namespace Lab2
 		// TODO
 		private static int RightChild(int position)
 		{
-			return 0;
+			return (position * 2) + 2;
 		}
 
 		private void Swap(int index1, int index2)

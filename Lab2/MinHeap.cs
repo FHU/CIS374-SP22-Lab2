@@ -100,20 +100,60 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
-
-
+			foreach (T val in array)
+				if (val.Equals(value))
+					return true;
 			return false;
 		}
 
 		// TODO
 		private void TrickleUp(int index)
 		{
+			if (index == 0)
+			{
+				return;
+			}
+			if (array[Parent(index)].CompareTo(array[index]) > 0)
+			{
+				Swap(Parent(index), index);
+				TrickleUp(Parent(index));
+			}
+			return;
 
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
+			if (index >= (Capacity / 2) - 1 )
+			{
+				return;
+			}
+			switch (array[RightChild(index)].CompareTo(array[index]), array[LeftChild(index)].CompareTo(array[index]))
+			{
+				case ( < 0, >= 0):
+					Swap(RightChild(index), index);
+					TrickleDown(RightChild(index));
+					break;
+				case ( >= 0, < 0):
+					Swap(LeftChild(index), index);
+					TrickleDown(LeftChild(index));
+					break;
+				case ( < 0, < 0):
+					if (array[RightChild(index)].CompareTo(array[LeftChild(index)]) < 0)
+					{
+						Swap(RightChild(index), index);
+						TrickleDown(RightChild(index));
+					}
+					else
+					{
+						Swap(LeftChild(index), index);
+						TrickleDown(LeftChild(index));
+					}
+					break;
+				default:
+					return;
+			}
 
 		}
 
@@ -123,7 +163,7 @@ namespace Lab2
 		/// </summary>
 		private static int Parent(int position)
 		{
-			return 0;
+			return (position - 1) / 2;
 		}
 
 		// TODO
@@ -132,7 +172,7 @@ namespace Lab2
 		/// </summary>
 		private static int LeftChild(int position)
 		{
-			return 0;
+			return (position * 2) + 1;
 		}
 
 		// TODO
@@ -141,7 +181,7 @@ namespace Lab2
 		/// </summary>
 		private static int RightChild(int position)
 		{
-			return 0;
+			return (position * 2) + 2;
 		}
 
 		private void Swap(int index1, int index2)
