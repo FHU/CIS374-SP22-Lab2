@@ -71,7 +71,7 @@ namespace Lab2
 		// TODO
 		/// <summary>
 		/// Removes and returns the max item in the max-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(1).
 		/// </summary>
 		public T ExtractMax()
         {
@@ -96,7 +96,7 @@ namespace Lab2
 
 		/// <summary>
 		/// Removes and returns the min item in the max-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(n).
 		/// </summary>
 		public T ExtractMin()
         {
@@ -135,9 +135,11 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
-			foreach (T val in array)
-				if (val.Equals(value))
+			for (int i = 0; i <= Count; i++)
+			{
+				if (array[i].Equals(value))
 					return true;
+            }
 			return false;
 		}
 
@@ -160,9 +162,9 @@ namespace Lab2
 		// TODO
 		private void TrickleDown(int index)
 		{
-			if (RightChild(index) > Count)
+			if (LeftChild(index) > Count)
 				return;
-			if(LeftChild(index)<= Count)
+			if(RightChild(index)<= Count)
             {
 				switch(array[RightChild(index)].CompareTo(array[index]), array[LeftChild(index)].CompareTo(array[index]))
                 {
@@ -191,10 +193,10 @@ namespace Lab2
             }
             else
             {
-				if(array[RightChild(index)].CompareTo(array[index]) > 0)
+				if(array[LeftChild(index)].CompareTo(array[index]) > 0)
                 {
-					Swap(RightChild(index), index);
-					TrickleDown(RightChild(index));
+					Swap(LeftChild(index), index);
+					TrickleDown(LeftChild(index));
                 }
 				return;
             }

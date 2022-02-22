@@ -47,7 +47,7 @@ namespace Lab2
 		// TODO
 		/// <summary>
 		/// Adds given item to the heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(logn).
 		/// </summary>
 		public void Add(T item)
 		{
@@ -75,21 +75,62 @@ namespace Lab2
 		// TODO
 		/// <summary>
 		/// Removes and returns the max item in the min-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(1).
 		/// </summary>
 		public T ExtractMax()
 		{
-			return default;
+			if (IsEmpty)
+			{
+				throw new Exception("Empty Heap");
+			}
+
+			int maxIndex = (Count - 1) / 2 + 1;
+			T max = array[maxIndex];
+			for (int i = maxIndex + 1; i < Count; i++)
+			{
+				if (array[i].CompareTo(max) < 0)
+				{
+					max = array[i];
+					maxIndex = i;
+				}
+			}
+
+			// remove min
+			// swap min with last element
+			Swap(maxIndex, Count - 1);
+
+			// remove last element
+			Count--;
+
+			TrickleUp(maxIndex);
+
+			return max;
 		}
 
 		// TODO
 		/// <summary>
 		/// Removes and returns the min item in the min-heap.
-		/// Time complexity: O(?).
+		/// Time complexity: O(n).
 		/// </summary>
 		public T ExtractMin()
 		{
-			return default;
+			if (IsEmpty)
+			{
+				throw new Exception("Empty Heap");
+			}
+
+			T min = array[0];
+
+			// swap max with last element
+			Swap(0, Count - 1);
+
+			// remove last element
+			Count--;
+
+			// trickle down from root
+			TrickleDown(0);
+
+			return min;
 		}
 
 		// TODO
@@ -100,9 +141,11 @@ namespace Lab2
 		public bool Contains(T value)
 		{
 			// do a linear search of the array
-			foreach (T val in array)
-				if (val.Equals(value))
+			for (int i = 0; i <= Count; i++)
+			{
+				if (array[i].Equals(value))
 					return true;
+			}
 			return false;
 		}
 
@@ -125,34 +168,43 @@ namespace Lab2
 		// TODO
 		private void TrickleDown(int index)
 		{
-			if (index >= (Capacity / 2) - 1 )
-			{
+			if (LeftChild(index) > Count)
 				return;
-			}
-			switch (array[RightChild(index)].CompareTo(array[index]), array[LeftChild(index)].CompareTo(array[index]))
+			if (RightChild(index) <= Count)
 			{
-				case ( < 0, >= 0):
-					Swap(RightChild(index), index);
-					TrickleDown(RightChild(index));
-					break;
-				case ( >= 0, < 0):
-					Swap(LeftChild(index), index);
-					TrickleDown(LeftChild(index));
-					break;
-				case ( < 0, < 0):
-					if (array[RightChild(index)].CompareTo(array[LeftChild(index)]) < 0)
-					{
+				switch (array[RightChild(index)].CompareTo(array[index]), array[LeftChild(index)].CompareTo(array[index]))
+				{
+					case ( < 0, >= 0):
 						Swap(RightChild(index), index);
 						TrickleDown(RightChild(index));
-					}
-					else
-					{
+						break;
+					case ( >= 0, < 0):
 						Swap(LeftChild(index), index);
 						TrickleDown(LeftChild(index));
-					}
-					break;
-				default:
-					return;
+						break;
+					case ( < 0, < 0):
+						if (array[RightChild(index)].CompareTo(array[LeftChild(index)]) > 0)
+						{
+							Swap(RightChild(index), index);
+							TrickleDown(RightChild(index));
+						}
+						else
+						{
+							Swap(LeftChild(index), index);
+							TrickleDown(LeftChild(index));
+						}
+						break;
+				}
+				return;
+			}
+			else
+			{
+				if (array[LeftChild(index)].CompareTo(array[index]) < 0)
+				{
+					Swap(LeftChild(index), index);
+					TrickleDown(LeftChild(index));
+				}
+				return;
 			}
 
 		}
