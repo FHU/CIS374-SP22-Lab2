@@ -121,7 +121,7 @@ namespace Lab2
 			// remove min
 			// swap min with last element
 			//Swap(minIndex, Count - 1);
-			array[0] = array[Count - 1];
+
 
 			// remove last element
 			Count--;
