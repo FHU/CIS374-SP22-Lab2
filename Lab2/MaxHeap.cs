@@ -146,60 +146,43 @@ namespace Lab2
 		// TODO
 		private void TrickleUp(int index)
 		{
-			if(index == 0)
-            {
-				return;
-            }
-			if (array[Parent(index)].CompareTo(array[index]) < 0)
+			if (index == 0)
 			{
-				Swap(Parent(index), index);
+				return;
+			}
+			if (array[index].CompareTo(array[Parent(index)]) > 0)
+			{
+				Swap(index, Parent(index));
 				TrickleUp(Parent(index));
 			}
-			return;
-			
+
 		}
 
 		// TODO
 		private void TrickleDown(int index)
 		{
-			if (LeftChild(index) > Count)
+			if (LeftChild(index) == Count && array[index].CompareTo(array[LeftChild(index)]) < 0)
+			{
+				Swap(index, LeftChild(index));
 				return;
-			if(RightChild(index)<= Count)
-            {
-				switch(array[RightChild(index)].CompareTo(array[index]), array[LeftChild(index)].CompareTo(array[index]))
-                {
-					case ( > 0, <= 0):
-						Swap(RightChild(index), index);
-						TrickleDown(RightChild(index));
-						break;
-					case ( <= 0, > 0):
-						Swap(LeftChild(index), index);
-						TrickleDown(LeftChild(index));
-						break;
-					case(> 0, > 0):
-						if (array[RightChild(index)].CompareTo(array[LeftChild(index)]) > 0)
-                        {
-							Swap(RightChild(index), index);
-							TrickleDown(RightChild(index));
-						}
-                        else
-                        {
-							Swap(LeftChild(index), index);
-							TrickleDown(LeftChild(index));
-						}
-						break;
-                }
+			}
+			if (RightChild(index) == Count && array[index].CompareTo(array[RightChild(index)]) < 0)
+			{
+				Swap(index, RightChild(index));
 				return;
-            }
-            else
-            {
-				if(array[LeftChild(index)].CompareTo(array[index]) > 0)
-                {
-					Swap(LeftChild(index), index);
-					TrickleDown(LeftChild(index));
-                }
+			}
+			if (LeftChild(index) >= Count || RightChild(index) >= Count)
 				return;
-            }
+			if (array[LeftChild(index)].CompareTo(array[RightChild(index)]) > 0 && array[index].CompareTo(array[LeftChild(index)]) < 0)
+			{
+				Swap(index, LeftChild(index));
+				TrickleDown(LeftChild(index));
+			}
+			else if (array[index].CompareTo(array[RightChild(index)]) < 0)
+			{
+				Swap(index, RightChild(index));
+				TrickleDown(RightChild(index));
+			}
 		}
 
 		/// <summary>
